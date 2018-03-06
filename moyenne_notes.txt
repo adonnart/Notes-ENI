@@ -283,3 +283,22 @@ Début
 Fin
 
 
+Algo Rectangle
+
+Variable largeur, hauteur, i, j : entier
+Variable signe : caractère
+
+Début
+
+	largeur <- saisir("Largeur ?") # 8
+	hauteur <- saisir("Hauteur ?") # 5
+	signe <- saisir("Caractère ?") # #
+	
+	Pour i de 1 à hauteur
+		Pour j de 1 à largeur
+			afficher(signe) # Sans Retour Chariot ? > écrireSRC
+		FPour
+		afficher()
+	FPour
+	
+Fin
