@@ -1,0 +1,103 @@
+Algo bulletinPaie
+
+Variable nom, prénom, statut : chaîne
+Variable nbHeures, nbEnfants, numStatut, primeFam  : entier
+Variable txHoraire, salBrut, salNet, totalCot, tmp : réel
+
+Constante SANS_MAJ : entier <- 169
+Constante MAJ_50 : entier <- 180
+
+Constante DETTE_SOCIALE : réel <- 3.49
+Constante GENERALISEE : réel <- 6.15
+Constante MALADIE : réel <- 0.95
+Constante VIEILLESSE : réel <- 8.44
+Constante CHOMAGE : réel <- 3.05
+Constante RETRAITE : réel <- 3.81
+Constante AGFF : réel <- 1.02
+
+Début
+	nom <- saisir("Nom de la personne ? ")
+	prénom <- saisir("Prénom de la personne ? ")
+	afficher("Statut ?")
+	afficher("1 - Agent de service")
+	afficher("2 - Employé de bureau")
+	afficher("3 - Cadre")
+	numStatut <- saisir()
+	nbHeures <- saisir("Nombre d'heures travaillées ? ")
+	txHoraire <- saisir("Taux horaire ? ")
+	nbEnfants <- saisir("Nombre d'enfants ? ")
+
+	afficher("Bulletin de " & prénom & " " & nom)
+
+	Selon numStatut
+		Cas 1 : statut <- "Agent de service"
+		Cas 2 : statut <- "Employé de bureau"
+		Cas 3 : statut <- "Cadre"
+	FinSelon
+	afficher("Statut : " & statut)
+
+	Si nbHeures <= SANS_MAJ Alors
+		salBrut <- nbHeures * txHoraire
+	Sinon Si nbHeures <= MAJ_50 Alors
+		salBrut <- SANS_MAJ * txHoraire + (nbHeures - SANS_MAJ) * txHoraire * 0.5
+	Sinon
+		salBrut <- SANS_MAJ * txHoraire + (MAJ_50 - SANS_MAJ) * txHoraire * 0.5 + (nbHeures - MAJ_50) * txHoraire * 0.6
+	FinSi
+	afficher("Salaire brut : " salBrut)
+
+	afficher("Calcul des cotisations :")
+
+	afficher("- Contribution pour le remboursement de la dette sociale et contribution sociale généralisée imposable")
+	tmp <- salBrut * DETTE_SOCIALE / 100
+	totalCot <- totalCot + tmp
+	afficher(salBrut & " x " & DETTE_SOCIALE & "% = " & tmp)
+
+	afficher("- Contribution sociale généralisée non imposable")
+	tmp <- salBrut * GENERALISEE / 100
+	totalCot <- totalCot + tmp
+	afficher(salBrut & " x " & GENERALISEE & "% = " & tmp)
+
+	afficher("- Assurance maladie")
+	tmp <- salBrut * MALADIE / 100
+	totalCot <- totalCot + tmp
+	afficher(salBrut & " x " & MALADIE & "% = " & tmp)
+
+	afficher("- Assurance vieillesse")
+	tmp <- salBrut * VIEILLESSE / 100
+	totalCot <- totalCot + tmp
+	afficher(salBrut & " x " & VIEILLESSE & "% = " & tmp)
+
+	afficher("- Assurance chômage")
+	tmp <- salBrut * CHOMAGE / 100
+	totalCot <- totalCot + tmp
+	afficher(salBrut & " x " & CHOMAGE & "% = " & tmp)
+
+	afficher("- Retraite complémentaire (IRCEM)")
+	tmp <- salBrut * RETRAITE / 100
+	totalCot <- totalCot + tmp
+	afficher(salBrut & " x " & RETRAITE & "% = " & tmp)
+
+	afficher("- Cotisation AGFF)
+	tmp <- salBrut * AGFF / 100
+	totalCot <- totalCot + tmp
+	afficher(salBrut & " x " & AGFF & "% = " & tmp)
+
+	afficher("Total des cotisations salariales : " & totalCot)
+
+	salNet <- salBrut - totalCot
+	afficher("Salaire net : " & salNet)
+
+	Si nbEnfants = 0 Alors
+		primeFam <- 0
+	Sinon Si nbEnfants = 1 Alors
+		primeFam <- 20
+	Sinon Si nbEnfants = 2 Alors
+		primeFam <- 50
+	Sinon
+		primeFam <- 70 + 20 * (nbEnfants - 2)
+	FinSi
+
+	afficher("- Prime familiale : " & primeFam)
+
+	afficher("Salaire net à payer : " & salNet + primeFam)
+Fin
