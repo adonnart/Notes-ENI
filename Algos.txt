@@ -1,0 +1,411 @@
+Algo MoyenneNotesPour
+
+Variable nbValeurs, cpt : entier
+Variable valeur, somme, moyenne : réel
+
+Début
+
+	nbValeurs <- saisir("Nombre de valeurs : ")
+	
+	Pour cpt <- 1 à nbValeurs
+		valeur <- saisir("Valeur : ")
+		somme <- somme + valeur
+	FPour
+	
+	moyenne <- somme / nbValeurs
+
+	afficher("La moyenne est " & moyenne)
+	
+Fin
+
+
+Algo MoyenneNotesTantQue
+
+Variable cpt, cptDix : entier <-0
+Variable valeur, somme, moyenne, txDix : réel
+
+Début
+
+	valeur <- saisir("Note (-1 pour terminer) : ")
+	
+	TantQue valeur >= 0
+		somme <- somme + valeur
+		cpt++
+		Si valeur >= 10 Alors
+			cptDix++
+		FSi
+		valeur <- saisir("Note (-1 pour terminer) : ")
+	FTq
+
+	Si cpt > 0 Alors
+		moyenne <- somme / cpt
+	
+		afficher("La moyenne est " & moyenne)
+
+		txDix = cptDix / cpt * 100
+		
+		afficher("Il y a" & txDix & "% de notes au-dessus de 10.")
+	FSi
+	
+Fin
+
+
+Algo DevineNombre
+
+Variable saisie <-0, nombre <-0 : entier
+
+Début
+
+	nombre <- rand(1, 100)
+	
+	TantQue saisie < 1 ou saisie > 100
+		saisie <- saisir("Un nombre entre 1 et 100 : ")
+	FTq
+	
+	TantQue saisie != nombre
+	
+		Si saisie > nombre Alors
+			afficher("C'est moins !")
+		Sinon
+			afficher("C'est plus !")
+		FSi
+		
+		saisie <- saisir("Un nombre entre 1 et 100 : ")
+		
+	FTq
+
+	afficher("Bravo !")
+	
+Fin
+
+
+Algo DevineNombre
+
+Variable saisie <-0, nombre <-0 : entier
+
+Début
+
+	nombre <- rand(1, 100)
+	
+	TantQue saisie < 1 ou saisie > 100
+		saisie <- saisir("Un nombre entre 1 et 100 : ")
+	FTq
+	
+	TantQue saisie != nombre
+	
+		Si saisie > nombre Alors
+			afficher("C'est moins !")
+		Sinon
+			afficher("C'est plus !")
+		FSi
+		
+		saisie <- saisir("Un nombre entre 1 et 100 : ")
+		
+	FTq
+
+	afficher("Bravo !")
+	
+Fin
+
+
+Algo bulletinPaie
+
+Variable nom, prénom, statut : chaîne
+Variable nbHeures, nbEnfants, numStatut, primeFam  : entier
+Variable txHoraire, salBrut, salNet, totalCot, tmp : réel
+
+Constante SANS_MAJ : entier <- 169
+Constante MAJ_50 : entier <- 180
+
+Constante DETTE_SOCIALE : réel <- 3.49
+Constante GENERALISEE : réel <- 6.15
+Constante MALADIE : réel <- 0.95
+Constante VIEILLESSE : réel <- 8.44
+Constante CHOMAGE : réel <- 3.05
+Constante RETRAITE : réel <- 3.81
+Constante AGFF : réel <- 1.02
+
+Début
+
+	nom <- saisir("Nom de la personne ? ")
+	prénom <- saisir("Prénom de la personne ? ")
+	afficher("Statut ?")
+	afficher("1 - Agent de service")
+	afficher("2 - Employé de bureau")
+	afficher("3 - Cadre")
+	numStatut <- saisir()
+	nbHeures <- saisir("Nombre d'heures travaillées ? ")
+	txHoraire <- saisir("Taux horaire ? ")
+	nbEnfants <- saisir("Nombre d'enfants ? ")
+
+	afficher("Bulletin de " & prénom & " " & nom)
+
+	Selon numStatut
+		Cas 1 : statut <- "Agent de service"
+		Cas 2 : statut <- "Employé de bureau"
+		Cas 3 : statut <- "Cadre"
+	FinSelon
+	afficher("Statut : " & statut)
+
+	Si nbHeures <= SANS_MAJ Alors
+		salBrut <- nbHeures * txHoraire
+	Sinon Si nbHeures <= MAJ_50 Alors
+		salBrut <- SANS_MAJ * txHoraire + (nbHeures - SANS_MAJ) * txHoraire * 0.5
+	Sinon
+		salBrut <- SANS_MAJ * txHoraire + (MAJ_50 - SANS_MAJ) * txHoraire * 0.5 + (nbHeures - MAJ_50) * txHoraire * 0.6
+	FinSi
+	afficher("Salaire brut : " salBrut)
+
+	afficher("Calcul des cotisations :")
+
+	afficher("- Contribution pour le remboursement de la dette sociale et contribution sociale généralisée imposable")
+	tmp <- salBrut * DETTE_SOCIALE / 100
+	totalCot <- totalCot + tmp
+	afficher(salBrut & " x " & DETTE_SOCIALE & "% = " & tmp)
+
+	afficher("- Contribution sociale généralisée non imposable")
+	tmp <- salBrut * GENERALISEE / 100
+	totalCot <- totalCot + tmp
+	afficher(salBrut & " x " & GENERALISEE & "% = " & tmp)
+
+	afficher("- Assurance maladie")
+	tmp <- salBrut * MALADIE / 100
+	totalCot <- totalCot + tmp
+	afficher(salBrut & " x " & MALADIE & "% = " & tmp)
+
+	afficher("- Assurance vieillesse")
+	tmp <- salBrut * VIEILLESSE / 100
+	totalCot <- totalCot + tmp
+	afficher(salBrut & " x " & VIEILLESSE & "% = " & tmp)
+
+	afficher("- Assurance chômage")
+	tmp <- salBrut * CHOMAGE / 100
+	totalCot <- totalCot + tmp
+	afficher(salBrut & " x " & CHOMAGE & "% = " & tmp)
+
+	afficher("- Retraite complémentaire (IRCEM)")
+	tmp <- salBrut * RETRAITE / 100
+	totalCot <- totalCot + tmp
+	afficher(salBrut & " x " & RETRAITE & "% = " & tmp)
+
+	afficher("- Cotisation AGFF")
+	tmp <- salBrut * AGFF / 100
+	totalCot <- totalCot + tmp
+	afficher(salBrut & " x " & AGFF & "% = " & tmp)
+
+	afficher("Total des cotisations salariales : " & totalCot)
+
+	salNet <- salBrut - totalCot
+	afficher("Salaire net : " & salNet)
+
+	Si nbEnfants = 0 Alors
+		primeFam <- 0
+	Sinon Si nbEnfants = 1 Alors
+		primeFam <- 20
+	Sinon Si nbEnfants = 2 Alors
+		primeFam <- 50
+	Sinon
+		primeFam <- 70 + 20 * (nbEnfants - 2)
+	FinSi
+
+	afficher("- Prime familiale : " & primeFam)
+
+	afficher("Salaire net à payer : " & salNet + primeFam)
+	
+Fin
+
+
+Algo RepliquesFilms
+
+Variable choix : entier
+
+Début
+
+	afficher("1 - Une réplique de La Cité de la Peur")
+	afficher("2 - Une réplique de James Bond")
+	afficher("3 - Une réplique de La vie est un long fleuve tranquille")
+	afficher("4 - Une réplique de Star Wars")
+	afficher("5 - Quitter")
+	
+	Répéter
+
+		choix <- saisir()
+
+		Selon choix
+			Cas 1 : afficher("La Cité de la Peur")
+			Cas 2 : afficher("James Bond")
+			Cas 3 : afficher("La vie est un long fleuve tranquille")
+			Cas 4 : afficher("Star Wars")
+			Cas 5 : afficher("Bye")
+			Autre : afficher("Saisie incorrecte")
+		FSelon
+		
+	TantQue choix != 5 FRépéter
+	
+Fin
+
+
+Algo DevineNombreAuto
+
+Variable réponse : caractère
+Variable min <- 1, max <- 100, tentative <- 0, nbTent <-0 : entier
+
+Début
+
+	afficher("Choisissez un nombre compris entre 1 et 100, puis appuyez sur une touche :")
+	saisir()
+	
+	Répéter
+	
+		tentative <- alea(min,max)
+		réponse <- saisir("Je tente " & tentative & " (+/-/=) ?")
+		
+		Si réponse = '-' Alors max <- tentative - 1
+		Sinon
+		Si réponse = '+' Alors min <- tentative + 1
+		FSi
+		
+		nbTent++
+		
+	TantQue réponse != '=' FRépéter
+		
+	afficher("Super ! J'ai trouvé en " & nbTent & " tentatives !")
+	
+Fin
+
+
+Algo MultipleTrois
+
+Variable réponse : entier
+Variable multiple : booléen
+
+Début
+
+	afficher("Entrez un multiple de 3 : ")
+
+	Répéter
+			
+		réponse <- saisir()
+		
+		Si réponse mod 3 != 0 Alors
+			afficher("Erreur : " & réponse & " n'est pas un multiple de 3.")
+			multiple <- FAUX
+		Sinon
+			afficher("Ok : " & réponse & " est un multiple de 3.")
+			multiple <- VRAI
+		FSi
+		
+	TantQue non multiple FRépéter
+	
+Fin
+
+
+Algo RenduMonnaie
+
+Constante PRIX_CAFE <- 0.6 : réel
+Constante P1 <- 1, P2 <- 0.5, P3 <- 0.2, P4 <- 0.1, P5 <- 0.05, P6 <- 2 : réel
+
+Variable pièce, crédit, rendu : réel
+
+Procédure ajoutPièce()
+
+	pièce <- saisir()
+	TantQue pièce != P1 et pièce != P2 et pièce != P3 et pièce != P4 et pièce != P5 et pièce != P6
+		pièce <- saisir("Pièce non acceptée, entrez une autre pièce : ")
+	FTq
+	crédit <- crédit + pièce
+
+Fin
+
+Début
+	
+	# Première pièce
+	
+	afficher("Entrez la valeur de la pièce : ")
+	ajoutPièce()
+	
+	# Si pas assez, on remet des pièces
+	
+	TantQue crédit < PRIX_CAFE
+	
+		afficher("Crédit insuffisant (" & crédit & "€/" & PRIX_CAFE & "€) : ")
+		ajoutPièce()
+		
+	FTq
+	
+	# Quand il n'y a plus de pièces à insérer
+	
+	afficher("Voici votre café")
+	
+	Si crédit > PRIX_CAFE Alors
+	
+		rendu <- crédit - PRIX_CAFE
+		afficher(" et votre monnaie (" & rendu & "€)")
+		
+		# Décomposition du rendu en pièces
+
+		# afficher("- " & rendu div P1 & " pièce(s) de " & P1 & "€")
+		# rendu mod P1
+		
+		# 1x 1€
+		Si rendu >= P1 Alors
+			afficher("1 pièce de " & P1 & "€")
+			rendu <- rendu - P1
+		FSi
+		
+		# 1x 0.50€
+		Si rendu >= P2 Alors
+			afficher("1 pièce de " & P2 & "€")
+			rendu <- rendu - P2
+		FSi
+		
+		# 2x 0.20€
+		Si rendu >= P3*2 Alors
+			afficher("2 pièces de " & P3 & "€")
+			rendu <- rendu - P3*2
+		FSi
+		
+		# 1x 0.20€
+		Si rendu >= P3 Alors
+			afficher("1 pièce de " & P3 & "€")
+			rendu <- rendu - P3
+		FSi
+		
+		# 1x 0.10€
+		Si rendu >= P4 Alors
+			afficher("1 pièce de " & P4 & "€")
+			rendu <- rendu - P4
+		FSi
+		
+		# 1x 0.05€
+		Si rendu >= P5 Alors
+			afficher("1 pièce de " & P5 & "€")
+			rendu <- rendu - P5
+		FSi
+	
+	FSi
+	
+	afficher(".")
+	
+Fin
+
+
+Algo Rectangle
+
+Variable largeur, hauteur, i, j : entier
+Variable signe : caractère
+
+Début
+
+	largeur <- saisir("Largeur ?") # 8
+	hauteur <- saisir("Hauteur ?") # 5
+	signe <- saisir("Caractère ?") # #
+	
+	Pour i de 1 à hauteur
+		Pour j de 1 à largeur
+			afficher(signe) # Sans Retour Chariot ? > écrireSRC
+		FPour
+		afficher()
+	FPour
+	
+Fin
